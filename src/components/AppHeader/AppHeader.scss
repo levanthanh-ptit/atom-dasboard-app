@@ -1,0 +1,24 @@
+@import '../../Styles/Colors.scss';
+@import '../../Styles/dimension.scss';
+.Header{
+    display: inline-block;
+    position: fixed;
+    text-align: justify;
+    height: $app-header-height;
+    width: 100%;
+    background: $header-light;
+    &__NavButton{
+        display: inline-flex;
+        height: 50px;
+        width: 50px;
+        font-size: 1.5em;
+        color: azure;
+        transition: 1s;
+    }
+    &__NavButton:hover{
+        background: $header-focus;
+    }
+    i{
+        margin: auto;
+    }
+}

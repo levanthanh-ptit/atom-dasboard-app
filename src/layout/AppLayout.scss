@@ -1,0 +1,18 @@
+@import '../Styles/Colors.scss';
+@import '../Styles/dimension.scss';
+.layout-container{
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    background: $background-light;
+}
+.wrap-container{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    background: $background-light;
+}
+
