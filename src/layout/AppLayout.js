@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import './AppLayout.scss'
 import Navigator from '../components/Navigator/Navigator'
 import AppHeader from '../components/AppHeader/AppHeader'
-import CardList from '../components/CardList/CardList';
+//import CardList from '../components/CardList/CardList'
+import Dashboard from '../components/Dashboard/Dashboard'
 export default class AppLayout extends Component {
   constructor(props) {
     super(props);
@@ -73,7 +74,7 @@ export default class AppLayout extends Component {
           onDragStart={this.onDragStart} />
         <div className={'wrap-container'}>
           <AppHeader handlerNavigatorOpenClick={this.handlerNavigatorOpenClick} />
-          <CardList dashboard_list={this.state.dashboard_list}
+          <Dashboard dashboard_list={this.state.dashboard_list}
             onDrop={this.onDrop}
             onDragStart={this.onDragStart} />
         </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import './CardList.scss'
-export default class CardList extends Component {
+import './Dashboard.scss'
+export default class Dashboard extends Component {
   onDragOver = (ev) => {
     ev.preventDefault();
     this.onDragStyle();

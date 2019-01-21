@@ -27,6 +27,8 @@
 .menu-item{
     width: calc(100% -20px);
     min-height: 30px;
+    max-height: 30px;
     margin: 5px 10px;
     background: rgba(200,200,200,0.6); 
+    overflow: hidden;
 }
