@@ -12,6 +12,7 @@ export default class Navigator extends Component {
           className='menu-item'
           draggable
           onDragStart={(e) => { this.props.onDragStart(e, element.id) }}
+          onDrop={(e) => { this.props.onDrop(e, 'navigator', element.id);}}
         >
           {element.id} + {element.name}
         </div>
@@ -20,7 +21,7 @@ export default class Navigator extends Component {
     return (
       <div className={'Navigator draggable' + (this.props.isEnable ? ' enable' : '')}
         onDragOver={(e) => this.onDragOver(e)}
-        onDrop={(e) => { this.props.onDrop(e, 'navigator') }}>
+        onDrop={(e) => { this.props.onDrop(e, 'navigator', null) }}>
         {contents}
       </div>
     )

@@ -1,47 +1,53 @@
 import React, { Component } from 'react'
 import './Dashboard.scss'
 export default class Dashboard extends Component {
+  state = {
+    style: ''
+  }
   onDragOver = (ev) => {
     ev.preventDefault();
     this.onDragStyle();
   }
-  state = {
-    style: {}
-  }
   onDragStyle() {
     this.setState({
-      style: {
-        borderWidth: '5px',
-        borderColor: 'white',
-        borderStyle: 'dashed'
-      }
+      style: ' highlight'
     })
   }
-  onDropStyle(){
+  onDragLeave() {
     this.setState({
-      style: {
-      }
+      style: ''
     })
   }
   render() {
     var contents = this.props.dashboard_list.map(element => {
       return (
-        <div key={element.id}
-          id={element.id}
-          className='content'
-          draggable
-          onDragStart={(e) => { this.props.onDragStart(e, element.id) }}
+        <div
+          key={element.id}
+          className='content-outer'
+          onDragOver={(e) => { this.onDragOver(e) }}
+          onDragLeave={() => { this.onDragLeave(); }}
         >
-          {element.id} + {element.name}
+          <div
+            className={'add-space'+this.state.style}
+            onDrop={(e) => { this.props.onDrop(e, 'dashboard', element.id); this.onDragLeave(); }}
+          />
+          <div
+            id={element.id}
+            className='content'
+            draggable
+            onDragStart={(e) => { this.props.onDragStart(e, element.id); }}
+            onDrop={(e) => { this.props.onDrop(e, 'dashboard', element.id); this.onDragLeave(); }}
+          >
+            {"id: " + element.id + " name: " + element.name}
+          </div>
         </div>
       )
     })
     return (
-      <div className='app-contents draggable'
-        style={this.state.style}
-        onDragOver={(e) => {this.onDragOver(e)} } 
-        onDragLeave = {() =>{this.onDropStyle();}}
-        onDrop={(e) => { this.props.onDrop(e, 'dashboard'); this.onDropStyle();}}>
+      <div className='app-contents'
+        onDragOver={(e) => { this.onDragOver(e) }}
+        onDragLeave={() => { this.onDragLeave(); }}
+      >
         {contents}
       </div>
     )
