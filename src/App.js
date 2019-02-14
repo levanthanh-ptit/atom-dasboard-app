@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './App.scss';
 import Layout from './layout/AppLayout';
 import Navigator from './components/Navigator/Navigator';
 import AppHeader from './components/AppHeader/AppHeader';
@@ -9,16 +9,18 @@ class App extends Component {
     super(props);
     this.state = {
       NavigatorIsEnable: false,
+      HeaderHidden: false,
       task_list: []
     };
     this.handlerNavigatorOpenClick = this.handlerNavigatorOpenClick.bind(this);
-    // for (let i = 0; i < 4; i++) {
-    //   this.state.task_list.push({ id: i, name: "App note " + i, category: 'navigator', type: 'note' });
-    // }
-    for (let i = 0; i < 5; i++) {
-      this.state.task_list.push({ id: i, name: "App reminder " + i, category: 'dashboard', type: 'reminder' });
+    for (let i = 0; i < 4; i++) {
+      this.state.task_list.push({ id: i, name: "App note " + i, category: 'dashboard', type: 'note', contents:'sample text '+i });
+    }
+    for (let i = 4; i < 10; i++) {
+      this.state.task_list.push({ id: i, name: "App reminder " + i, category: 'navigator', type: 'reminder', contents:null });
     }
   }
+
   changeOder(fromIndex, toIndex) {
     var arr = this.state.task_list;
     var el = arr[fromIndex];
@@ -26,10 +28,36 @@ class App extends Component {
     arr.slice(toIndex, 0, el);
     return arr;
   }
+  noteTextChange = (id, text) => {
+    let task_list = this.state.task_list;
+    console.log(id+text);
+    
+    this.state.task_list.map( e => {
+      if(e.id == id){
+        task_list[task_list.indexOf(e)].contents = text;
+      }
+    });
+    console.log(task_list);
+    this.setState({
+      task_list: task_list
+    })
+  }
+  nameChange = (id, text) => {
+    let task_list = this.state.task_list;
+    this.state.task_list.map( e => {
+      if(e.id == id){
+        task_list[task_list.indexOf(e)].name = text;
+      }
+    });
+    console.log(task_list);
+    this.setState({
+      task_list: task_list
+    })
+  }
   handlerNavigatorOpenClick() {
-    this.setState(state => ({
+    this.setState({
       NavigatorIsEnable: !this.state.NavigatorIsEnable
-    }))
+    })
   }
   onDragStart = (ev, id) => {
     ev.dataTransfer.setData("id", id);
@@ -38,7 +66,7 @@ class App extends Component {
     let id = ev.dataTransfer.getData("id");
     var index;
     var object;
-    if(id == positionId) return;
+    if (id == positionId) return;
     let task_list = this.state.task_list;
     this.state.task_list.map(e => {
       if (e.id == id) {
@@ -65,7 +93,13 @@ class App extends Component {
       ...this.state,
       task_list: task_list
     })
-
+  }
+  HeaderHiddenHandle = (ev) => {
+    let scrollTop = ev.target.scrollTop;
+    console.log(scrollTop);
+    this.setState({
+      HeaderHidden: scrollTop > 0
+    })
   }
   render() {
     const propsNavigator = <Navigator
@@ -74,15 +108,23 @@ class App extends Component {
         if (value.category == 'navigator') { return true }
       })}
       onDrop={this.onDrop}
-      onDragStart={this.onDragStart} />
+      onDragStart={this.onDragStart}
+    />
     const propsAppHeader = <AppHeader
-      handlerNavigatorOpenClick={this.handlerNavigatorOpenClick} />
+      handlerNavigatorOpenClick={this.handlerNavigatorOpenClick}
+      hidden={this.state.HeaderHidden}
+    />
     const propsDashboard = <Dashboard
       dashboard_list={this.state.task_list.filter((value) => {
         if (value.category == 'dashboard') { return true }
       })}
       onDrop={this.onDrop}
-      onDragStart={this.onDragStart} />
+      onDragStart={this.onDragStart}
+      HeaderHidden= {this.state.HeaderHidden}
+      HeaderHiddenHandle={this.HeaderHiddenHandle}
+      noteTextChange={this.noteTextChange}
+      nameChange={this.nameChange}
+    />
     return (
       <div id='App'>
         <Layout Navigator={propsNavigator} AppHeader={propsAppHeader} Dashboard={propsDashboard} />

@@ -1,27 +1,77 @@
 import React, { Component } from 'react'
 import './Navigator.scss'
 export default class Navigator extends Component {
+  state = {
+    style: '',
+    CardDraggable: true,
+  }
   onDragOver = (ev) => {
     ev.preventDefault();
+    this.onDragStyle();
+  }
+  onDragStyle() {
+    this.setState({
+      style: ' highlight'
+    })
+  }
+  onDragLeave() {
+    this.setState({
+      style: ''
+    })
   }
   render() {
     var contents = this.props.nav_list.map(element => {
       return (
-        <div key={element.id}
-          id={element.id}
-          className='menu-item'
-          draggable
-          onDragStart={(e) => { this.props.onDragStart(e, element.id) }}
-          onDrop={(e) => { this.props.onDrop(e, 'navigator', element.id);}}
+        <div
+          key={element.id}
+          className='menu-item-container'
+          onDragOver={(e) => { this.onDragOver(e) }}
+          onDragLeave={() => { this.onDragLeave(); }}
         >
-          {element.id} + {element.name}
+          <div
+            className='add-item-space-wrapper'
+            onDrop={(e) => { this.props.onDrop(e, 'navigator', element.id); this.onDragLeave(); }}
+          >
+            <div
+              className={'add-item-space' + this.state.style}
+            ></div>
+          </div>
+          <div
+            className='menu-item'
+            draggable={this.state.CardDraggable}
+            onDragStart={(e) => { this.props.onDragStart(e, element.id) }}
+            onDrop={(e) => { this.props.onDrop(e, 'navigator', element.id); this.onDragLeave(); }}
+          >
+            {element.id + ' ' + element.name}
+          </div>
         </div>
+
       )
     })
+    contents = <>
+      {contents}
+      <div
+        className='menu-item-container'
+        onDragOver={(e) => { this.onDragOver(e) }}
+        onDragLeave={() => { this.onDragLeave(); }}
+        onDrop={(e) => { this.props.onDrop(e, 'navigator', null); this.onDragLeave(); }}
+        style={{
+          height: '100%',
+        }}
+      >
+        <div
+          className='add-item-space-wrapper'
+        >
+          <div className={'add-item-space' + this.state.style}></div>
+        </div>
+      </div>
+    </>
+
     return (
       <div className={'Navigator draggable' + (this.props.isEnable ? ' enable' : '')}
         onDragOver={(e) => this.onDragOver(e)}
-        onDrop={(e) => { this.props.onDrop(e, 'navigator', null) }}>
+        onDragLeave={() => { this.onDragLeave(); }}
+      >
         {contents}
       </div>
     )

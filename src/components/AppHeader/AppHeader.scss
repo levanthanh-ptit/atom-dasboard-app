@@ -7,11 +7,14 @@
     height: $app-header-height;
     width: 100%;
     background: $header-light;
+    &.hidden{
+            height: 20px;
+    }
     &__NavButton{
         display: inline-flex;
-        height: 50px;
+        height: 100%;
         width: 50px;
-        font-size: 1.5em;
+        font-size: 1.3em;
         color: azure;
         transition: 1s;
     }

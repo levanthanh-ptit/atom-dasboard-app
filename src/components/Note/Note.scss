@@ -1,0 +1,58 @@
+@import '../../Styles/Colors.scss';
+.note-wraper{
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    width: 200px;
+}
+.note-header{
+    display: block;
+    box-sizing: border-box;
+}
+.note-header-text{
+    background: none;
+    border: none;
+    display: block;
+    align-items: center;
+    height: 2em;
+    width: 200px;
+    box-sizing: border-box;
+    padding: 0 5px;
+    font-size: 1em;
+    color: black;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background-color: $paper-yellow;
+    &.editting{
+        text-align: center;
+        border: solid 1px gray;
+        border-radius: 10px;
+    }
+}
+.note-content{
+    display: block;
+    border: none;
+    box-sizing: border-box;
+    padding: 5px;
+    height: calc( 100% - 2em);
+    font-size: 1.2em;
+    background-color: $paper-light-yellow;
+    overflow-y: scroll;
+    resize: none;
+    background-image: linear-gradient( rgba(0,0,0,0) 95%, lightgray 5%);
+    background-size: 100% 2rem;
+    line-height: 2rem;
+    &::-webkit-scrollbar{
+        width: 7px;
+        background-color: $scrollbar-back;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $scrollbar-thumb;
+    }
+    &::-webkit-scrollbar-thumb:hover{
+        background-color: $scrollbar-thumb-hover;
+    }
+
+    
+}
