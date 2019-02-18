@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import './AppHeader.scss'
 export default class AppHeader extends Component {
-  constructor(props) {
-    super(props);
-  }
+
   render() {
     var hidden = this.props.hidden;
     return (

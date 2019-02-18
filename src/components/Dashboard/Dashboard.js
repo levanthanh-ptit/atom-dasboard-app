@@ -89,9 +89,9 @@ export default class Dashboard extends Component {
 
     return (
       <div className={'app-contents' + (this.props.HeaderHidden ? ' header-hiden' : '')}
+        id='dashboard-main'
         onDragOver={(e) => { this.onDragOver(e) }}
         onDragLeave={() => { this.onDragLeave(); }}
-        onDrop={() => { this.onDragLeave(); }}
         onScroll={(e) => this.props.HeaderHiddenHandle(e)}
         onDrop={(e) => { if (contents == 0) { this.props.onDrop(e, 'dashboard', null); this.onDragLeave(); } }}
       >

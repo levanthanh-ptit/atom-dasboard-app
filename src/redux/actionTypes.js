@@ -1,0 +1,3 @@
+export const CHANGE_CATEGORY = 'CHANGE_CATEGORY'
+export const ADD_TASK = 'ADD_TASK'
+export const DELETE_TASK = 'DELETE_TASK'

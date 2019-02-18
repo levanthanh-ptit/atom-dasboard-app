@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import './App.scss';
-import Layout from './layout/AppLayout';
-import Navigator from './components/Navigator/Navigator';
-import AppHeader from './components/AppHeader/AppHeader';
-import Dashboard from './components/Dashboard/Dashboard';
-class App extends Component {
+import Layout from './HomeLayout';
+import Navigator from '../../components/Navigator/Navigator';
+import AppHeader from '../../components/AppHeader/AppHeader';
+import Dashboard from '../../components/Dashboard/Dashboard';
+import { changeCategory } from '../../redux/actions'
+class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +26,7 @@ class App extends Component {
     var el = arr[fromIndex];
     arr.slice(fromIndex, 1);
     arr.slice(toIndex, 0, el);
+    dispatch(changeCategory())
     return arr;
   }
   noteTextChange = (id, text) => {
@@ -136,4 +137,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Home;

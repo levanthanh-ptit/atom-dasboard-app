@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import './AppLayout.scss'
-export default class AppLayout extends Component {
+import './HomeLayout.scss'
+export default class HomeLayout extends Component {
   render() {
     return (
       <div className='layout-container'>

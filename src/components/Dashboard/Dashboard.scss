@@ -3,7 +3,7 @@
 .app-contents{
     display: flex;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: flex-start;
     width: 100%;
     box-sizing: border-box;
     margin-top: $app-header-height;
@@ -23,6 +23,7 @@
     }
     &.header-hiden{
         margin-top: $app-header-hidden-height;
+        height: calc(100% - 20px);
     }
     
 }
