@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { getTasksByCategory } from '../../redux/selectors'
+import { changeTaskPosition } from '../../redux/actions'
 import './Navigator.scss'
-export default class Navigator extends Component {
+export class Navigator extends Component {
   state = {
     style: '',
     CardDraggable: true,
+  }
+  onDragStart = (ev, id) => {
+    ev.dataTransfer.setData("id", id);
   }
   onDragOver = (ev) => {
     ev.preventDefault();
@@ -30,7 +37,7 @@ export default class Navigator extends Component {
         >
           <div
             className='add-item-space-wrapper'
-            onDrop={(e) => { this.props.onDrop(e, 'navigator', element.id); this.onDragLeave(); }}
+            onDrop={(e) => { this.props.changeTaskPosition(e, 'navigator', element.id); this.onDragLeave(); }}
           >
             <div
               className={'add-item-space' + this.state.style}
@@ -39,8 +46,8 @@ export default class Navigator extends Component {
           <div
             className='menu-item'
             draggable={this.state.CardDraggable}
-            onDragStart={(e) => { this.props.onDragStart(e, element.id) }}
-            onDrop={(e) => { this.props.onDrop(e, 'navigator', element.id); this.onDragLeave(); }}
+            onDragStart={(e) => { this.onDragStart(e, element.id) }}
+            onDrop={(e) => { this.props.changeTaskPosition(e, 'navigator', element.id); this.onDragLeave(); }}
           >
             {element.id + ' ' + element.name}
           </div>
@@ -54,7 +61,7 @@ export default class Navigator extends Component {
         className='menu-item-container'
         onDragOver={(e) => { this.onDragOver(e) }}
         onDragLeave={() => { this.onDragLeave(); }}
-        onDrop={(e) => { this.props.onDrop(e, 'navigator', null); this.onDragLeave(); }}
+        onDrop={(e) => { this.props.changeTaskPosition(e, 'navigator', null); this.onDragLeave(); }}
         style={{
           height: '100%',
         }}
@@ -68,7 +75,7 @@ export default class Navigator extends Component {
     </>
 
     return (
-      <div className={'Navigator draggable' + (this.props.isEnable ? ' enable' : '')}
+      <div className={'Navigator draggable' + (this.props.Navigator.status ? ' enable' : '')}
         onDragOver={(e) => this.onDragOver(e)}
         onDragLeave={() => { this.onDragLeave(); }}
       >
@@ -77,3 +84,19 @@ export default class Navigator extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  let { task_list } = state.tasksReducer
+  let { Navigator } = state.navigatorReducer
+  console.log(state);
+
+  return {
+    nav_list: getTasksByCategory(task_list, 'navigator'),
+    Navigator
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ changeTaskPosition }, dispatch)
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Navigator)

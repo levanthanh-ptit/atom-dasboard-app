@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
-import tasks from './tasks'
-
-export default combineReducers({ tasks });
+import tasksReducer from './tasksReducer'
+import navigatorReducer from './navigatorReducer'
+import headerReducer from './headerReducer'
+export default combineReducers({ tasksReducer, navigatorReducer, headerReducer });

@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { getTasksByCategory } from '../../redux/selectors'
+import { changeTaskPosition, addTask, deleteTask, noteTextChange, nameChange, changeHeaderStatus } from '../../redux/actions'
 import './Dashboard.scss'
 import Note from '../Note/Note'
-export default class Dashboard extends Component {
+export class Dashboard extends Component {
   state = {
     style: '',
     CardDraggable: true,
@@ -10,6 +14,14 @@ export default class Dashboard extends Component {
     this.setState({
       CardDraggable: value
     })
+  }
+  HeaderHiddenHandle = (ev) => {
+    let scrollTop = ev.target.scrollTop;
+    if (ev.target.id === 'dashboard-main')
+      this.props.changeHeaderStatus(scrollTop > 0 ? 'thin' : 'big')
+  }
+  onDragStart = (ev, id) => {
+    ev.dataTransfer.setData("id", id);
   }
   onDragOver = (ev) => {
     ev.preventDefault();
@@ -31,14 +43,15 @@ export default class Dashboard extends Component {
       card = <Note id={id}
         headerText={name}
         text={contents}
-        textChange={this.props.noteTextChange}
-        noteNameChange={this.props.nameChange}
+        textChange={() => this.props.noteTextChange()}
+        noteNameChange={() => this.props.nameChange()}
         CardDraggable={this.handleCardDraggable}
       />
     }
     return card
   }
   render() {
+    var HeaderHidden = (this.props.Header.Hidden === 'thin')
     var contents;
     if (this.props.dashboard_list.length == 0) {
       contents = 0;
@@ -54,7 +67,7 @@ export default class Dashboard extends Component {
           >
             <div
               className='add-card-space-wrapper'
-              onDrop={(e) => { this.props.onDrop(e, 'dashboard', element.id); this.onDragLeave(); }}
+              onDrop={(e) => { this.props.changeTaskPosition(e, 'dashboard', element.id); this.onDragLeave(); }}
             >
               <div className={'add-card-space' + this.state.style} />
             </div>
@@ -62,8 +75,8 @@ export default class Dashboard extends Component {
               id={element.id}
               className='card'
               draggable={this.state.CardDraggable}
-              onDragStart={(e) => { this.props.onDragStart(e, element.id); }}
-              onDrop={(e) => { this.props.onDrop(e, 'dashboard', element.id); this.onDragLeave(); }}
+              onDragStart={(e) => { this.onDragStart(e, element.id); }}
+              onDrop={(e) => { this.props.changeTaskPosition(e, 'dashboard', element.id); this.onDragLeave(); }}
             >
               {this.cardRender(element.id, element.type, element.name, element.contents)}
             </div>
@@ -79,7 +92,7 @@ export default class Dashboard extends Component {
         >
           <div
             className='add-card-space-wrapper'
-            onDrop={(e) => { this.props.onDrop(e, 'dashboard', null); this.onDragLeave(); }}
+            onDrop={(e) => { this.props.changeTaskPosition(e, 'dashboard', null); this.onDragLeave(); }}
           >
             <div className={'add-card-space' + this.state.style} />
           </div>
@@ -88,15 +101,30 @@ export default class Dashboard extends Component {
     }
 
     return (
-      <div className={'app-contents' + (this.props.HeaderHidden ? ' header-hiden' : '')}
+      <div className={'app-contents' + (HeaderHidden ? ' header-hiden' : '')}
         id='dashboard-main'
         onDragOver={(e) => { this.onDragOver(e) }}
         onDragLeave={() => { this.onDragLeave(); }}
-        onScroll={(e) => this.props.HeaderHiddenHandle(e)}
-        onDrop={(e) => { if (contents == 0) { this.props.onDrop(e, 'dashboard', null); this.onDragLeave(); } }}
+        onScroll={(e) => this.HeaderHiddenHandle(e)}
+        onDrop={(e) => { if (contents == 0) { this.props.changeTaskPosition(e, 'dashboard', null); this.onDragLeave(); } }}
       >
         {contents == 0 ? null : contents}
       </div>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  console.log(state);
+  let { Header } = state.headerReducer
+  let { task_list } = state.tasksReducer
+  return {
+    dashboard_list: getTasksByCategory(task_list, 'dashboard'),
+    Header
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ changeTaskPosition, addTask, deleteTask, noteTextChange, nameChange, changeHeaderStatus }, dispatch)
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard) 
