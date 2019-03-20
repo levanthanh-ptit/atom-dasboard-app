@@ -1,7 +1,7 @@
 import {CHANGE_HEADER_STATUS} from '../actionTypes'
 const initialState = {
   Header: {
-    Hidden: 'thin'
+    size: 'big'
   },
 }
 export default (state = initialState, { type, payload }) => {
@@ -12,7 +12,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         Header: {
-          Hidden: status
+          size: status
         }
       }
     }

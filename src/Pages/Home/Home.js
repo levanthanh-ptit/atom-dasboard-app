@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Layout from './HomeLayout';
-import Navigator from '../../components/Navigator/Navigator';
-import AppHeader from '../../components/AppHeader/AppHeader';
-import Dashboard from '../../components/Dashboard/Dashboard';
+import Navigator from '../../components/Navigator/NavigatorRDC';
+import AppHeader from '../../components/AppHeader/AppHeaderRDC';
+import Dashboard from '../../components/Dashboard/DashboardRDC';
 class Home extends Component {
   render() {
     const propsNavigator = <Navigator />
